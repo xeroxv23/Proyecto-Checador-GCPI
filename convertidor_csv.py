@@ -62,5 +62,26 @@ df = df.sort_values(by=['CODIGO','FECHA'],
 df.to_csv('/home/xeroxv23/Documents/proyecto_checador/SEMANA_02/SEMANA_02_2023.csv', index=False)
 print("Hemos guardado el archivo")
 
-df.to_excel("/home/xeroxv23/Documents/proyecto_checador/SEMANA_02/SEMANA_2_TABLA_HORAS.xlsx", index=False)
+df['INGRESO'] = pd.to_datetime(df['INGRESO']).dt.time
+df['SALIDA'] = pd.to_datetime(df['SALIDA']).dt.time
 
+# Crear un objeto de escritura de Excel
+writer = pd.ExcelWriter("/home/xeroxv23/Documents/proyecto_checador/SEMANA_02/SEMANA_2_TABLA_HORAS.xlsx", engine='xlsxwriter')
+
+# Escribir el dataframe en la primera hoja
+df.to_excel(writer, sheet_name='DESGLOSE_HORAS_DIAS', index=False)
+
+# Ahora con el metodo de pandas .to_numeric logramos convertir las horas laboradas a un numero entero, donde se ignorara los errores si se presenta un numero 0 o la leyenda que se establecio como : FALTA/NO CHECO
+
+df['HORAS_LABORADAS'] = pd.to_numeric(df['HORAS_LABORADAS'], errors='coerce')
+df = df.dropna()
+
+# Con el metodo .groupby estamos creando un nuevo dataframe donde los index(columnas) seran CODIGO Y HORAS LABORADAS y con el metodo .sum, se sumarian las horas cuando hay coincidencia de codigo de trabajador. El metodo pivot_table crea la tabla dinamica en el orden que se es requerido, dando como valores una sumatoria de las horas y como index el codigo
+df_agrupado = df.groupby('CODIGO')['HORAS_LABORADAS'].sum()
+tabla_dinamica = df.pivot_table(values='HORAS_LABORADAS', index='CODIGO', aggfunc='sum')
+
+# Escribir la tabla dinámica en la segunda hoja
+tabla_dinamica.to_excel(writer, sheet_name='Sheet2', index=True)
+
+# Guardar el archivo
+writer.save()
