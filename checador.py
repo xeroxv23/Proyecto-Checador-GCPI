@@ -4,7 +4,7 @@ from datetime import datetime
 import time
 
 # Leer el archivo de excel y seleccionar los datos
-df = pd.read_excel('/home/xeroxv23/Documents/proyecto_checador/enero_2023.xlsx', sheet_name=0, usecols=[0,1,2,3,4],names=['CODIGO','NOMBRE','FECHA','INGRESO','SALIDA'],header=None)
+df = pd.read_excel('/home/xeroxv23/Documents/Proyectos GCPI/proyecto_checador/enero_2023.xlsx', sheet_name=0, usecols=[0,1,2,3,4],names=['CODIGO','NOMBRE','FECHA','INGRESO','SALIDA'],header=None)
 df.drop([0], axis=0, inplace=True)
 
 # Sustituir las filas con valores nulos en 0
@@ -34,7 +34,7 @@ df['INGRESO'] = pd.to_datetime(df['INGRESO']).dt.time
 df['SALIDA'] = pd.to_datetime(df['SALIDA']).dt.time
 
 # Crear un objeto de escritura de Excel
-writer = pd.ExcelWriter('/home/xeroxv23/Documents/proyecto_checador/ENERO_PERSONAL/checador_oficina.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter('/home/xeroxv23/Documents/Proyectos GCPI/proyecto_checador/ENERO_PERSONAL/checador_oficina.xlsx', engine='xlsxwriter')
 
 # Escribir el dataframe en la primera hoja
 df.to_excel(writer, sheet_name='DESGLOSE_HORAS_DIAS', index=False)

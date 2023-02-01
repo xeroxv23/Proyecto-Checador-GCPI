@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Leer archivo excel
-df = pd.read_excel('/home/xeroxv23/Documents/proyecto_checador/enero_2023.xlsx', header=None, usecols='A:G', names=["CODIGO", "NOMBRE", "FECHA", "INGRESO", "SALIDA", "SAL_COM","ING_COM"])
+df = pd.read_excel('/home/xeroxv23/Documents/Proyectos GCPI/proyecto_checador/enero_2023.xlsx', header=None, usecols='A:G', names=["CODIGO", "NOMBRE", "FECHA", "INGRESO", "SALIDA", "SAL_COM","ING_COM"])
 
 # Eliminar las filas con valores nulos
 df['INGRESO'].fillna(0, inplace=True)
@@ -36,7 +36,7 @@ df['HORAS_LABORADAS'] = (df['HORAS_LABORADAS'] - df['TIEMPO_COMIDA'])
 del(df['TIEMPO_COMIDA'])"""
 
 # Guardar archivo como csv
-df.to_csv('/home/xeroxv23/Documents/proyecto_checador/ENERO_PERSONAL/checador_oficina.csv', index=False)
+df.to_csv('/home/xeroxv23/Documents/Proyectos GCPI/proyecto_checador/ENERO_PERSONAL/checador_oficina.csv', index=False)
 print('ARCHIVO CREADO')
 
 
@@ -46,7 +46,7 @@ df['SAL_COM'] = pd.to_datetime(df['SAL_COM']).dt.time
 df['ING_COM'] = pd.to_datetime(df['ING_COM']).dt.time
 
 # Crear un objeto de escritura de Excel
-writer = pd.ExcelWriter('/home/xeroxv23/Documents/proyecto_checador/ENERO_PERSONAL/checador_oficina.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter('/home/xeroxv23/Documents/Proyectos GCPI/proyecto_checador/ENERO_PERSONAL/checador_oficina.xlsx', engine='xlsxwriter')
 
 # Escribir el dataframe en la primera hoja
 df.to_excel(writer, sheet_name='DESGLOSE_HORAS_DIAS', index=False)
